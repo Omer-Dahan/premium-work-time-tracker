@@ -3,8 +3,11 @@ package com.timetracker.premium
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,9 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.timetracker.premium.data.ProjectEntity
+import com.timetracker.premium.ui.screens.CreateProjectDialog
+import com.timetracker.premium.ui.screens.DashboardScreen
+import com.timetracker.premium.ui.screens.ReportsScreen
+import com.timetracker.premium.ui.screens.SettingsScreen
 import com.timetracker.premium.ui.theme.PremiumTimeTrackerTheme
 import com.timetracker.premium.ui.viewModel.TrackerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,41 +51,63 @@ sealed class Screen(val route: String, val title: String) {
 @Composable
 fun MainAppScreen(viewModel: TrackerViewModel) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Dashboard) }
+    var showCreateDialog by remember { mutableStateOf(false) }
+    var editingProject by remember { mutableStateOf<ProjectEntity?>(null) }
+
+    if (showCreateDialog || editingProject != null) {
+        CreateProjectDialog(
+            project = editingProject,
+            onDismiss = {
+                showCreateDialog = false
+                editingProject = null
+            },
+            onSave = { project ->
+                viewModel.saveProject(project)
+                showCreateDialog = false
+                editingProject = null
+            }
+        )
+    }
 
     Scaffold(
         bottomBar = {
             NavigationBar {
-                val items = listOf(Screen.Dashboard, Screen.Reports, Screen.Settings)
-                items.forEach { screen ->
-                    NavigationBarItem(
-                        selected = currentScreen == screen,
-                        onClick = { currentScreen = screen },
-                        label = { Text(screen.title) },
-                        icon = {
-                            // In real production, load custom vector icon drawables
-                            // Icon(imageVector = ImageVector.vectorResource(id = ...), contentDescription = null)
-                            Text(screen.title.take(1)) // fallback initial for template
-                        }
-                    )
-                }
+                NavigationBarItem(
+                    selected = currentScreen == Screen.Dashboard,
+                    onClick = { currentScreen = Screen.Dashboard },
+                    label = { Text("Dashboard") },
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") }
+                )
+                NavigationBarItem(
+                    selected = currentScreen == Screen.Reports,
+                    onClick = { currentScreen = Screen.Reports },
+                    label = { Text("Reports") },
+                    icon = { Icon(Icons.Default.BarChart, contentDescription = "Reports") }
+                )
+                NavigationBarItem(
+                    selected = currentScreen == Screen.Settings,
+                    onClick = { currentScreen = Screen.Settings },
+                    label = { Text("Settings") },
+                    icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") }
+                )
             }
         }
     ) { innerPadding ->
-        // In real app, mount Standard Compose Navigation graph:
-        // NavHost(navController, startDestination = "dashboard", modifier = Modifier.padding(innerPadding))
-        Modifier.padding(innerPadding)
-        
-        // Simple screen router for clean view illustration
         when (currentScreen) {
-            Screen.Dashboard -> {
-                // DashboardScreen(viewModel)
-            }
-            Screen.Reports -> {
-                // ReportsScreen(viewModel)
-            }
-            Screen.Settings -> {
-                // SettingsScreen(viewModel)
-            }
+            Screen.Dashboard -> DashboardScreen(
+                viewModel = viewModel,
+                modifier = Modifier.padding(innerPadding),
+                onCreateProjectClick = { showCreateDialog = true },
+                onEditProjectClick = { project -> editingProject = project }
+            )
+            Screen.Reports -> ReportsScreen(
+                viewModel = viewModel,
+                modifier = Modifier.padding(innerPadding)
+            )
+            Screen.Settings -> SettingsScreen(
+                viewModel = viewModel,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }

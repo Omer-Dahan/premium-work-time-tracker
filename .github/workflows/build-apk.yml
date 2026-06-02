@@ -23,16 +23,18 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 8.5
+          gradle-version: '8.5'
+
+      - name: Make gradlew executable (if present)
+        run: chmod +x android/gradlew 2>/dev/null || true
 
       - name: Build Debug APK
-        run: |
-          cd android
-          gradle assembleDebug
+        working-directory: android
+        run: gradle assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
+          name: PremiumWorkTimeTracker-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
+          retention-days: 30
