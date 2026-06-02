@@ -138,178 +138,179 @@ export default function ProjectsScreen({
   return (
     <div className="flex-1 relative h-full w-full flex flex-col overflow-hidden" id="projects-root-pane">
       <div className="flex-1 overflow-y-auto px-5 pt-6 pb-32 flex flex-col gap-6" id="projects-screen-scroll">
-        {/* Search / Stat Strip */}
-        <div className="flex items-center justify-between" id="projects-header-strip">
-          <h2 className="text-xl font-bold tracking-tight text-white">{t('projects')}</h2>
-          <span className="text-xs font-mono text-neutral-400 bg-neutral-900 border border-neutral-800 px-2.5 py-1 rounded-full">
-            {projects.length} {projects.length === 1 ? t('project').toLowerCase() : t('projects').toLowerCase()}
-          </span>
+      {/* Search / Stat Strip */}
+      <div className="flex items-center justify-between" id="projects-header-strip">
+        <h2 className="text-xl font-bold tracking-tight text-white">{t('projects')}</h2>
+        <span className="text-xs font-mono text-neutral-400 bg-neutral-900 border border-neutral-800 px-2.5 py-1 rounded-full">
+          {projects.length} {projects.length === 1 ? t('project').toLowerCase() : t('projects').toLowerCase()}
+        </span>
+      </div>
+
+      {projects.length === 0 ? (
+        <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-neutral-950 border border-dashed border-neutral-800 rounded-2xl" id="projects-empty-state">
+          <Briefcase className="w-10 h-10 text-neutral-600 mb-3" />
+          <p className="text-sm font-medium text-neutral-300 leading-normal max-w-[240px]">
+            {t('emptyState_projects')}
+          </p>
+          <button
+            onClick={openCreateModal}
+            className="mt-4 px-4 py-2 bg-white text-black hover:bg-neutral-200 transition-all font-medium text-xs rounded-xl cursor-pointer"
+            id="create-first-project-btn"
+          >
+            {t('createProject')}
+          </button>
         </div>
+      ) : (
+        <div className="flex flex-col gap-4" id="projects-list">
+          {projects.map((proj) => {
+            const isCurrentActive = activeSession?.projectId === proj.id;
+            const pastSec = calculatePastSeconds(proj.id);
+            const liveSec = isCurrentActive ? activeSession.currentWorkedSeconds : 0;
+            const displaySec = pastSec + liveSec;
 
-        {projects.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-neutral-950 border border-dashed border-neutral-800 rounded-2xl" id="projects-empty-state">
-            <Briefcase className="w-10 h-10 text-neutral-600 mb-3" />
-            <p className="text-sm font-medium text-neutral-300 leading-normal max-w-[240px]">
-              {t('emptyState_projects')}
-            </p>
-            <button
-              onClick={openCreateModal}
-              className="mt-4 px-4 py-2 bg-white text-black hover:bg-neutral-200 transition-all font-medium text-xs rounded-xl cursor-pointer"
-              id="create-first-project-btn"
-            >
-              {t('createProject')}
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4" id="projects-list">
-            {projects.map((proj) => {
-              const isCurrentActive = activeSession?.projectId === proj.id;
-              const pastSec = calculatePastSeconds(proj.id);
-              const liveSec = isCurrentActive ? activeSession.currentWorkedSeconds : 0;
-              const displaySec = pastSec + liveSec;
+            let statusText = t('notRunning');
+            let statusColor = 'bg-neutral-800 text-neutral-400';
+            let cardBorder = 'border-neutral-800';
 
-              let statusText = t('notRunning');
-              let statusColor = 'bg-neutral-800 text-neutral-400';
-              let cardBorder = 'border-neutral-800';
-
-              if (isCurrentActive) {
-                if (activeSession.isPaused) {
-                  statusText = t('paused');
-                  statusColor = 'bg-amber-950/20 text-amber-400 border border-amber-800/30';
-                  cardBorder = 'border-amber-800/20';
-                } else {
-                  statusText = t('active');
-                  statusColor = 'bg-white text-black font-semibold animate-pulse';
-                  cardBorder = 'border-white';
-                }
+            if (isCurrentActive) {
+              if (activeSession.isPaused) {
+                statusText = t('paused');
+                statusColor = 'bg-amber-950/20 text-amber-400 border border-amber-800/30';
+                cardBorder = 'border-amber-800/20';
+              } else {
+                statusText = t('active');
+                statusColor = 'bg-white text-black font-semibold animate-pulse';
+                cardBorder = 'border-white';
               }
+            }
 
-              return (
-                <div
-                  key={proj.id}
-                  className={`relative flex flex-col bg-neutral-950/80 border ${cardBorder} rounded-2xl p-5 hover:bg-neutral-950 hover:transition-all group shrink-0`}
-                  id={`project-card-${proj.id}`}
-                >
-                  {/* Upper row: Name & Status indicator */}
-                  <div className={`flex items-start justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`} id="proj-card-upper">
-                    <div className="flex-1" id="proj-card-title-container">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1 block">
-                        {proj.clientName ? `${t('clientLabel')}: ${proj.clientName}` : t('project')}
-                      </span>
-                      <h3 className="text-base font-bold text-white transition-colors group-hover:text-neutral-200">
-                        {proj.name}
-                      </h3>
-                    </div>
-                    <span className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded-md tracking-wider shrink-0 select-none ${statusColor}`}>
-                      {statusText}
+            return (
+              <div
+                key={proj.id}
+                className={`relative flex flex-col bg-neutral-950/80 border ${cardBorder} rounded-2xl p-5 hover:bg-neutral-950 hover:transition-all group`}
+                id={`project-card-${proj.id}`}
+              >
+                {/* Upper row: Name & Status indicator */}
+                <div className={`flex items-start justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`} id="proj-card-upper">
+                  <div className="flex-1" id="proj-card-title-container">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1 block">
+                      {proj.clientName ? `${t('clientLabel')}: ${proj.clientName}` : t('project')}
                     </span>
+                    <h3 className="text-base font-bold text-white transition-colors group-hover:text-neutral-200">
+                      {proj.name}
+                    </h3>
                   </div>
+                  <span className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded-md tracking-wider shrink-0 select-none ${statusColor}`}>
+                    {statusText}
+                  </span>
+                </div>
 
-                  {/* Description */}
-                  {proj.description && (
-                    <p className={`text-xs text-neutral-400 mt-2 line-clamp-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {proj.description}
-                    </p>
-                  )}
+                {/* Description */}
+                {proj.description && (
+                  <p className={`text-xs text-neutral-400 mt-2 line-clamp-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {proj.description}
+                  </p>
+                )}
 
-                  {/* Rate details */}
-                  {proj.hourlyRate && (
-                    <div className={`flex items-center gap-1.5 mt-3 text-neutral-400 text-xs font-mono justify-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <DollarSign className="w-3.5 h-3.5" />
-                      <span>{t('rateLabel')}: ${proj.hourlyRate}/{t('hoursShort')}</span>
-                    </div>
-                  )}
+                {/* Rate details */}
+                {proj.hourlyRate && (
+                  <div className={`flex items-center gap-1.5 mt-3 text-neutral-400 text-xs font-mono justify-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <DollarSign className="w-3.5 h-3.5" />
+                    <span>{t('rateLabel')}: ${proj.hourlyRate}/{t('hoursShort')}</span>
+                  </div>
+                )}
 
-                  {/* Total time worked tracker UI */}
-                  <div className="mt-5 pt-4 border-t border-neutral-900/60 flex items-center justify-between" id="proj-card-timer-strip">
-                    <div className={`flex flex-col ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
-                      <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">
-                        {t('totalTimeWorked')}
+                {/* Total time worked tracker UI */}
+                <div className="mt-5 pt-4 border-t border-neutral-900/60 flex items-center justify-between" id="proj-card-timer-strip">
+                  <div className={`flex flex-col ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
+                    <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">
+                      {t('totalTimeWorked')}
+                    </span>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
+                      <span className="text-lg font-bold font-mono text-white tracking-tight">
+                        {formatSeconds(displaySec)}
                       </span>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
-                        <span className="text-lg font-bold font-mono text-white tracking-tight">
-                          {formatSeconds(displaySec)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Actions Drawer */}
-                    <div className="flex items-center gap-2" id="action-drawer-container">
-                      <button
-                        onClick={(e) => openEditModal(proj, e)}
-                        className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-900/80 rounded-xl transition-all cursor-pointer"
-                        title={t('editProject')}
-                      >
-                        <Edit2 className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={(e) => handleDelete(proj.id, e)}
-                        className="p-2 text-neutral-500 hover:text-red-400 hover:bg-red-950/20 rounded-xl transition-all cursor-pointer"
-                        title={t('deleteProject')}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   </div>
 
-                  {/* GIANT ACTION TIMER BUTTON: Start Working / Pause / Stop */}
-                  <div className="mt-4" id="giant-working-button-wrapper">
-                    {!isCurrentActive ? (
-                      <button
-                        onClick={() => onStartWorking(proj.id)}
-                        className="w-full flex items-center justify-center gap-2 py-3 bg-white hover:bg-neutral-100 text-black font-bold text-sm tracking-wide rounded-xl shadow-md cursor-pointer transition-all active:scale-[0.98]"
-                        id={`start-work-btn-${proj.id}`}
-                      >
-                        <Play className="w-4 h-4 fill-black" />
-                        <span>{t('startWorking')}</span>
-                      </button>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-2" id="timer-active-button-slots">
-                        {activeSession.isPaused ? (
-                          <button
-                            onClick={onResumeWorking}
-                            className="flex items-center justify-center gap-1.5 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
-                            id={`resume-work-btn-${proj.id}`}
-                          >
-                            <Play className="w-3.5 h-3.5 fill-white" />
-                            <span>{t('resume')}</span>
-                          </button>
-                        ) : (
-                          <button
-                            onClick={onPauseWorking}
-                            className="flex items-center justify-center gap-1.5 py-3 bg-neutral-900 hover:bg-neutral-800 text-amber-400 border border-amber-500/20 font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
-                            id={`pause-work-btn-${proj.id}`}
-                          >
-                            <Pause className="w-3.5 h-3.5 fill-amber-400" />
-                            <span>{t('pause')}</span>
-                          </button>
-                        )}
-
-                        <button
-                          onClick={onStopWorking}
-                          className="flex items-center justify-center gap-1.5 py-3 bg-red-950 hover:bg-red-900 text-red-200 border border-red-500/20 font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
-                          id={`stop-work-btn-${proj.id}`}
-                        >
-                          <Square className="w-3.5 h-3.5 fill-red-200" />
-                          <span>{t('stop')}</span>
-                        </button>
-                      </div>
-                    )}
+                  {/* Actions Drawer */}
+                  <div className="flex items-center gap-2" id="action-drawer-container">
+                    <button
+                      onClick={(e) => openEditModal(proj, e)}
+                      className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-900/80 rounded-xl transition-all cursor-pointer"
+                      title={t('editProject')}
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={(e) => handleDelete(proj.id, e)}
+                      className="p-2 text-neutral-500 hover:text-red-400 hover:bg-red-950/20 rounded-xl transition-all cursor-pointer"
+                      title={t('deleteProject')}
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
+
+                {/* GIANT ACTION TIMER BUTTON: Start Working / Pause / Stop */}
+                <div className="mt-4" id="giant-working-button-wrapper">
+                  {!isCurrentActive ? (
+                    <button
+                      onClick={() => onStartWorking(proj.id)}
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-white hover:bg-neutral-100 text-black font-bold text-sm tracking-wide rounded-xl shadow-md cursor-pointer transition-all active:scale-[0.98]"
+                      id={`start-work-btn-${proj.id}`}
+                    >
+                      <Play className="w-4 h-4 fill-black" />
+                      <span>{t('startWorking')}</span>
+                    </button>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2" id="timer-active-button-slots">
+                      {activeSession.isPaused ? (
+                        <button
+                          onClick={onResumeWorking}
+                          className="flex items-center justify-center gap-1.5 py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
+                          id={`resume-work-btn-${proj.id}`}
+                        >
+                          <Play className="w-3.5 h-3.5 fill-white" />
+                          <span>{t('resume')}</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={onPauseWorking}
+                          className="flex items-center justify-center gap-1.5 py-3 bg-neutral-900 hover:bg-neutral-800 text-amber-400 border border-amber-500/20 font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
+                          id={`pause-work-btn-${proj.id}`}
+                        >
+                          <Pause className="w-3.5 h-3.5 fill-amber-400" />
+                          <span>{t('pause')}</span>
+                        </button>
+                      )}
+
+                      <button
+                        onClick={onStopWorking}
+                        className="flex items-center justify-center gap-1.5 py-3 bg-red-950 hover:bg-red-900 text-red-200 border border-red-500/20 font-bold text-xs rounded-xl cursor-pointer transition-all active:scale-[0.98]"
+                        id={`stop-work-btn-${proj.id}`}
+                      >
+                        <Square className="w-3.5 h-3.5 fill-red-200" />
+                        <span>{t('stop')}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       </div>
 
       {/* Floating Action Button (FAB) Bottom Right */}
       <button
         onClick={openCreateModal}
-        className={`absolute bottom-6 right-6 w-12 h-12 bg-white text-black hover:bg-neutral-200 shadow-xl rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-105 active:scale-95 z-40 ${isRTL ? 'right-auto left-6' : ''
-          }`}
+        className={`absolute bottom-6 right-6 w-12 h-12 bg-white text-black hover:bg-neutral-200 shadow-xl rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-105 active:scale-95 z-40 ${
+          isRTL ? 'right-auto left-6' : ''
+        }`}
         id="project-fab-btn"
       >
         <Plus className="w-6 h-6 stroke-[3px]" />

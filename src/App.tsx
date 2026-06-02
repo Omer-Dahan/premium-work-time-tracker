@@ -291,15 +291,10 @@ export default function App() {
                 <mask id="wt-logo-mask">
                   <rect width="512" height="512" rx="128" fill="white" />
                   <g fill="black">
-                    <!-- Stroke 1 (left down-right) -->
                     <polygon points="90,170 130,170 200,335 160,335" />
-                    <!-- Stroke 2 (left-mid up-right) -->
                     <polygon points="160,335 200,335 270,170 230,170" />
-                    <!-- Stroke 3 (right-mid down-right) -->
                     <polygon points="230,170 270,170 340,335 300,335" />
-                    <!-- Stroke 4 (right up-right) -->
                     <polygon points="300,335 340,335 410,170 370,170" />
-                    <!-- T-bar (horizontal crossbar centered and extended over the top of Stroke 4) -->
                     <polygon points="327,170 453,170 438.2,205 312.2,205" />
                   </g>
                 </mask>
