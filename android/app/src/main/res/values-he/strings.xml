@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">מעקב זמן יוקרתי</string>
+    <string name="dashboard">לוח בקרה</string>
+    <string name="projects">פרויקטים</string>
+    <string name="reports">דוחות</string>
+    <string name="settings">הגדרות</string>
+
+    <string name="start_working">התחל עבודה</string>
+    <string name="pause">השהה</string>
+    <string name="resume">המשך</string>
+    <string name="stop">עצור</string>
+    <string name="active">פעיל</string>
+    <string name="paused">מושהה</string>
+    <string name="not_running">לא פועל</string>
+    <string name="total_time_worked">סך הכל זמן עבודה</string>
+    <string name="no_description">לא הוזן תיאור</string>
+    <string name="hourly_rate">תעריף לשעה</string>
+    <string name="client_name">לקוח</string>
+    <string name="estimated_revenue">הכנסה משוערת</string>
+
+    <string name="edit_project">עריכת פרויקט</string>
+    <string name="delete_project">מחיקת פרויקט</string>
+    <string name="create_project">יצירת פרויקט</string>
+    <string name="confirm_delete">האם אתה בטוח שברצונך למחוק פרויקט זה? כל מפגשי העבודה השייכים לו יימחקו לצמתיות.</string>
+
+    <string name="project_name_req">שם פרויקט (חובה)</string>
+    <string name="project_name">שם הפרויקט</string>
+    <string name="description">תיאור</string>
+    <string name="description_opt">תיאור (אופציונלי)</string>
+    <string name="hourly_rate_opt">תעריף לשעה (אופציונלי)</string>
+    <string name="client_name_opt">שם הלקוח (אופציונלי)</string>
+    <string name="cancel">ביטול</string>
+    <string name="save">שמירה</string>
+    <string name="create">צור</string>
+
+    <string name="reports_export">דוחות וייצוא</string>
+    <string name="filter_by">סנן לפי</string>
+    <string name="single_day">יום בודד</string>
+    <string name="week">שבוע</string>
+    <string name="month">חודש</string>
+    <string name="custom_range">טווח תאריכים</string>
+    <string name="start_date">תאריך התחלה</string>
+    <string name="end_date">תאריך סיום</string>
+    <string name="summary">סיכום נתונים</string>
+    <string name="total_hours">סה״כ שעות</string>
+    <string name="sessions">מפגשים</string>
+    <string name="avg_daily_hours">ממוצע שעות יומי</string>
+    <string name="estimated_income">הכנסה משוערת</string>
+    <string name="detailed_sessions">מפגשים מפורטים</string>
+    <string name="date">תאריך</string>
+    <string name="project">פרויקט</string>
+    <string name="hours_worked">שעות עבודה</string>
+    <string name="export_to_excel">ייצוא לאקסל (XLSX)</string>
+    <string name="all_data">כל הנתונים</string>
+
+    <string name="language">שפה</string>
+    <string name="english">אנגלית</string>
+    <string name="hebrew">עברית</string>
+    <string name="theme">ערכת נושא</string>
+    <string name="light">בהיר</string>
+    <string name="dark">כהה</string>
+    <string name="system_default">ברירת מחדל מערכת</string>
+    <string name="appearance">מראה</string>
+    <string name="black_white_premium">שחור-לבן יוקרתי</string>
+    <string name="export_db">ייצוא בסיס נתונים</string>
+    <string name="import_db">ייבוא בסיס נתונים</string>
+    <string name="about">אודות</string>
+    <string name="app_version">גרסת אפליקציה</string>
+    <string name="privacy_policy">מדיניות פרטיות</string>
+    <string name="privacy_policy_desc">האפליקציה פועלת באופן מקומי לחלוטין. הנתונים נשמרים על המכשיר שלך ואינם יוצאים לשום שרת חיצוני.</string>
+</resources>
