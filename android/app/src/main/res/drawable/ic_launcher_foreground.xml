@@ -1,62 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  WT logo: white rounded square with dark cutouts for the W and T letters.
+  The background layer (#0A0A0A) + this foreground creates the final icon.
+  fillType="evenOdd" makes the WT letter areas transparent (showing through to background).
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Clock ring (center 54,54, radius 28) -->
-    <path
-        android:fillColor="#00000000"
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4.5"
-        android:pathData="M26,54 a28,28 0 1,0 56,0 a28,28 0 1,0 -56,0" />
-
-    <!-- 12 o'clock tick -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M54,29 L54,35" />
-
-    <!-- 3 o'clock tick -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M79,54 L73,54" />
-
-    <!-- 6 o'clock tick -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M54,79 L54,73" />
-
-    <!-- 9 o'clock tick -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M29,54 L35,54" />
-
-    <!-- Hour hand at 10 o'clock (300 deg from 12): tip at (54 + 15*sin300, 54 - 15*cos300) = (41, 46.5) -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4"
-        android:strokeLineCap="round"
-        android:pathData="M54,54 L41,46.5" />
-
-    <!-- Minute hand at 10 min (60 deg from 12): tip at (54 + 21*sin60, 54 - 21*cos60) = (72.2, 43.5) -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeLineCap="round"
-        android:pathData="M54,54 L72.2,43.5" />
-
-    <!-- Center dot -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M51,54 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+        android:fillType="evenOdd"
+        android:pathData="
+            M 36,19 L 72,19 A 17,17 0 0,1 89,36 L 89,72 A 17,17 0 0,1 72,89 L 36,89 A 17,17 0 0,1 19,72 L 19,36 A 17,17 0 0,1 36,19 Z
+            M 22,39.5 L 29,39.5 L 41.4,68.5 L 34.3,68.5 Z
+            M 34.3,68.5 L 41.4,68.5 L 53.7,39.5 L 46.7,39.5 Z
+            M 46.7,39.5 L 53.7,39.5 L 66.1,68.5 L 59,68.5 Z
+            M 59,68.5 L 66.1,68.5 L 78.4,39.5 L 71.4,39.5 Z
+            M 63.8,39.5 L 86,39.5 L 83.4,45.6 L 61.2,45.6 Z" />
 
 </vector>
